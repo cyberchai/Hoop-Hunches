@@ -7,6 +7,8 @@ editor: visual
 
 ```{r}
 
+library(dplyr)
+library(ggplot2)
 library(tidyverse)
 library(tidytuesdayR)
 
@@ -46,6 +48,17 @@ fullData[percent_columns] <- lapply(fullData[percent_columns], function(x) {
 
 head(fullData)
 ```
+
+We also generate a ratio of wins to losses
+```{r}
+
+fullData = fullData %>% 
+  mutate(WLratio = W/L) 
+
+head(fullData)
+
+```
+
 
 ## RESULTS
 
