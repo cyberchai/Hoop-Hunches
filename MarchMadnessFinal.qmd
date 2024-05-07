@@ -7,15 +7,11 @@ editor: visual
 
 # Hoop Hunches: Exploring the Power of Public Sentiment on the 2024 Men's March Madness Tournament Outcomes
 
-
 ## Our Data:
 
-Our data is from tidytuesday's Men’s March Madness 2024 set.
-Link: https://github.com/rfordatascience/tidytuesday/blob/master/data/2024/2024-03-26/readme.md
+Our data is from tidytuesday's Men’s March Madness 2024 set. Link: https://github.com/rfordatascience/tidytuesday/blob/master/data/2024/2024-03-26/readme.md
 
 There are two datasets that will be joined and used as one in our study to predict the 2024 March Madness Men’s Basketball tournament winner: ‘team-results.csv’ and ‘public-picks.csv’. The data sets include data from the men's teams in the tournament from 2008-2024, except 2020 when the tournament did not occur due to Covid. This includes information on team wins and losses and how they were predicted to perform, among other factors. As the tournament has already happened, we will also be adding a binary variable called ‘win’, where the winning final team is marked with a 1 (or a numerical column ‘win’ that marks each team that wins each of their games). The full dataset (including the added ‘win’ column) for ‘team-results.csv’ contains 21 columns, and ‘public-picks.csv’ contains a total of 9 columns, each of which can be found with their variable descriptions using the link above.
-
-
 
 ## Data Exploration (EDA):
 
@@ -35,17 +31,18 @@ team_results <- tuesdata$`team-results`
 public_picks <- tuesdata$`public-picks`
 ```
 
-
 #### Looking at the initial data: Pre-Wrangling
 
 ```{r}
 head(team_results)
 ```
+
 ```{r}
 head(public_picks)
 ```
 
 #### Wrangling:
+
 Before we use our data, we need to format some of the numbers by removing the % and convert the <chr> percentages to their numeric values. In our wrangling process, we will also combine the team-results and public-picks datasets to be one merged dataset.
 
 ```{r}
@@ -76,6 +73,7 @@ ggplot(fullData, aes(x = WINPERCENT, y = R64.y)) +
        y = "% People who picked team to win in Round of 64") +
   theme_minimal()
 ```
+
 #### **Visualization 2: Win Percentage vs Public Prediction in the Final 4 Round including PACE: Performance Against Seed Expectations**
 
 ```{r}
@@ -88,7 +86,6 @@ ggplot(fullData, aes(x = WINPERCENT, y = F4.y)) +
        y = "% People who picked team to win in Round of 64") +
   theme_minimal()
 ```
-
 
 #### **Visualization 2: Visualizing the Number of Times a Team has Made it to the Final 4**
 
@@ -110,7 +107,3 @@ ggplot(f4_least_once, aes(x = reorder(TEAM, F4.x), y = F4.x)) +
   theme_minimal()
 
 ```
-
-
-
-
