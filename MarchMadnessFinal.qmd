@@ -1,0 +1,116 @@
+---
+title: "MarchMadnessFinal"
+author: "Chaira Harder, Isabelle Elder, Sirohi Kumar"
+format: pdf
+editor: visual
+---
+
+# Hoop Hunches: Exploring the Power of Public Sentiment on the 2024 Men's March Madness Tournament Outcomes
+
+
+## Our Data:
+
+Our data is from tidytuesday's Men’s March Madness 2024 set.
+Link: https://github.com/rfordatascience/tidytuesday/blob/master/data/2024/2024-03-26/readme.md
+
+There are two datasets that will be joined and used as one in our study to predict the 2024 March Madness Men’s Basketball tournament winner: ‘team-results.csv’ and ‘public-picks.csv’. The data sets include data from the men's teams in the tournament from 2008-2024, except 2020 when the tournament did not occur due to Covid. This includes information on team wins and losses and how they were predicted to perform, among other factors. As the tournament has already happened, we will also be adding a binary variable called ‘win’, where the winning final team is marked with a 1 (or a numerical column ‘win’ that marks each team that wins each of their games). The full dataset (including the added ‘win’ column) for ‘team-results.csv’ contains 21 columns, and ‘public-picks.csv’ contains a total of 9 columns, each of which can be found with their variable descriptions using the link above.
+
+
+
+## Data Exploration (EDA):
+
+```{r}
+# libraries
+library(ggplot2)
+library(tidyverse)
+library(dplyr)
+
+# this library contains our data
+library(tidytuesdayR)
+
+# data import
+tuesdata <- tidytuesdayR::tt_load('2024-03-26')
+
+team_results <- tuesdata$`team-results`
+public_picks <- tuesdata$`public-picks`
+```
+
+
+#### Looking at the initial data: Pre-Wrangling
+
+```{r}
+head(team_results)
+```
+```{r}
+head(public_picks)
+```
+
+#### Wrangling:
+Before we use our data, we need to format some of the numbers by removing the % and convert the <chr> percentages to their numeric values. In our wrangling process, we will also combine the team-results and public-picks datasets to be one merged dataset.
+
+```{r}
+# merging the two datasets on a full join by their team names:
+
+fullData <- full_join(team_results, public_picks, by = c("TEAM" = "TEAM"))
+
+
+# converting the <char> percentages to doubles and removing the '%'
+
+percent_columns <- c("R64.y", "R32.y", "S16.y", "E8.y", "F4.y", "F4PERCENT", "CHAMPPERCENT", "FINALS")
+fullData[percent_columns] <- lapply(fullData[percent_columns], function(x) {
+  as.numeric(gsub("%", "", x)) / 100
+})
+
+head(fullData)
+```
+
+#### **Visualization 1: Win Percentage vs Public Prediction for Round of 64 including PACE: Performance Against Seed Expectations**
+
+```{r}
+# visualizing win percentage vs public predictions in inital round of 64 teams through a scatterplot
+
+ggplot(fullData, aes(x = WINPERCENT, y = R64.y)) +
+  geom_point(aes(color = PASE)) +
+  labs(title = "Win Percentage vs Public Prediction for Round of 64",
+       x = "Team Win Percentage",
+       y = "% People who picked team to win in Round of 64") +
+  theme_minimal()
+```
+#### **Visualization 2: Win Percentage vs Public Prediction in the Final 4 Round including PACE: Performance Against Seed Expectations**
+
+```{r}
+# visualizing win percentage vs public predictions in Final 4 round through a scatterplot
+
+ggplot(fullData, aes(x = WINPERCENT, y = F4.y)) +
+  geom_point(aes(color = PASE)) +
+  labs(title = "Win Percentage vs Public Prediction for Round of 64",
+       x = "Team Win Percentage",
+       y = "% People who picked team to win in Round of 64") +
+  theme_minimal()
+```
+
+
+#### **Visualization 2: Visualizing the Number of Times a Team has Made it to the Final 4**
+
+This visualization potentially gives us insight into the teams consistently making it to the Final Four round.
+
+```{r}
+# visualizing through a bar plot, only including the teams that have made it to the final four at least once
+
+f4_least_once <- fullData |>
+  filter(F4.x >= 1)
+
+
+ggplot(f4_least_once, aes(x = reorder(TEAM, F4.x), y = F4.x)) +
+  geom_bar(stat="identity", fill = "blue") + 
+  labs(title = "Ordered Number of Appearances in the Final Four by Team",
+       x = "Team",
+       y = "Number of Final Four Appearances") +
+  coord_flip() +  
+  theme_minimal()
+
+```
+
+
+
+
