@@ -47,13 +47,6 @@ fullData[percent_columns] <- lapply(fullData[percent_columns], function(x) {
 head(fullData)
 ```
 
-
-```{r}
-
-head(team_results)
-
-```
-
 ## RESULTS
 
 ## DISCUSSION
