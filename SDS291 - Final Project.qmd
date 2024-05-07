@@ -16,7 +16,7 @@ library(tidytuesdayR)
 
 ## METHODS
 
-### Load the data: 
+### Load the data:
 
 ```{r}
 
@@ -27,23 +27,29 @@ public_picks <- tuesdata$`public-picks`
 
 ```
 
-### Data wrangling: 
+### Data wrangling:
+
+Before we use our data, we need to format some of the numbers by removing the % and convert the <chr> percentages to their numeric values. In our wrangling process, we will also combine the team-results and public-picks datasets to be one merged dataset.
+
+```{r}
+# merging the two datasets on a full join by their team names:
+
+fullData <- full_join(team_results, public_picks, by = c("TEAM" = "TEAM"))
+
+
+# converting the <char> percentages to doubles and removing the '%'
+
+percent_columns <- c("R64.y", "R32.y", "S16.y", "E8.y", "F4.y", "F4PERCENT", "CHAMPPERCENT", "FINALS")
+fullData[percent_columns] <- lapply(fullData[percent_columns], function(x) {
+  as.numeric(gsub("%", "", x)) / 100
+})
+
+head(fullData)
+```
+
 
 ## RESULTS
 
 ## DISCUSSION
 
-## DATA APPENDIX
-
-```{r}
-1 + 1
-```
-
-You can add options to executable code like this
-
-```{r}
-#| echo: false
-2 * 2
-```
-
-The `echo: false` option disables the printing of code (only output is displayed).
+## Data Appendix
