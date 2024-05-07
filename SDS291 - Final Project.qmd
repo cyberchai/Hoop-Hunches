@@ -62,6 +62,21 @@ head(fullData)
 
 ## RESULTS
 
+### HYPOTHESIS 1 - SIROHI
+
+
+### HYPOTHESIS 2 - CHAIRA
+
+
 ## DISCUSSION
+
+
+### LIMITATIONS 
+
+
+
+### FUTURE DIRECTION
+
+
 
 ## Data Appendix
