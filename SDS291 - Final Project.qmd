@@ -5,13 +5,35 @@ format: html
 editor: visual
 ---
 
-## Quarto
+```{r}
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+library(tidyverse)
+library(tidytuesdayR)
 
-## Running Code
+```
 
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+## INTRODUCTION
+
+## METHODS
+
+### Load the data: 
+
+```{r}
+
+tuesdata <- tidytuesdayR::tt_load('2024-03-26')
+
+team_results <- tuesdata$`team-results`
+public_picks <- tuesdata$`public-picks`
+
+```
+
+### Data wrangling: 
+
+## RESULTS
+
+## DISCUSSION
+
+## DATA APPENDIX
 
 ```{r}
 1 + 1
